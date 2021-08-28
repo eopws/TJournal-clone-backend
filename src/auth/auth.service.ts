@@ -17,7 +17,7 @@ export class AuthService {
     ) {}
 
     async registration(userDto: RegistrationDto): Promise<object> {
-        const candidate = await this.userService.getUserBy('email', userDto.email);
+        const candidate = await this.userService.getOneBy('email', userDto.email);
 
         if (candidate) {
             throw new HttpException('User with such email already exist', HttpStatus.BAD_REQUEST);
@@ -44,7 +44,7 @@ export class AuthService {
     }
 
     async login(userDto: LoginDto): Promise<object> {
-        const user = await this.userService.getUserBy('email', userDto.email);
+        const user = await this.userService.getOneBy('email', userDto.email);
 
         if (!user) {
             throw new HttpException('User with such email doesn\'t exist', HttpStatus.BAD_REQUEST);
@@ -74,7 +74,7 @@ export class AuthService {
     }
 
     async activate(activationLink: string): Promise<void> {
-        const user = await this.userService.getUserBy('activationLink', activationLink);
+        const user = await this.userService.getOneBy('activationLink', activationLink);
 
         if (!user) {
             throw new HttpException('Wrong activation link', HttpStatus.BAD_REQUEST);
@@ -92,7 +92,7 @@ export class AuthService {
             throw new HttpException('Wrong refresh token', HttpStatus.UNAUTHORIZED);
         }
 
-        const user = await this.userService.getUserBy('email', userData.email);
+        const user = await this.userService.getOneBy('email', userData.email);
 
         const tokens = {
             accessToken : this.tokenService.generateAccessToken(user),

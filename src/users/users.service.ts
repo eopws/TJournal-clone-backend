@@ -32,7 +32,7 @@ export class UsersService {
         return await this.userModel.findByIdAndRemove(id);
     }
 
-    async getUserBy(key: string, value: any): Promise<User> {
+    async getOneBy(key: string, value: any): Promise<User> {
         return await this.userModel.findOne({[key]: value});
     }
 
