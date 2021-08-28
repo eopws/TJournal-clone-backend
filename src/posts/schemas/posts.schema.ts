@@ -16,6 +16,9 @@ export class Post {
   @Prop({ required: true })
   content: string
 
+  @Prop({ required: true })
+  slug: string
+
   @Prop({ default: false })
   isDraft: boolean
 

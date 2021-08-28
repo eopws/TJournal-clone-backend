@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as uuid from 'uuid';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post, PostDocument } from './schemas/posts.schema';
@@ -10,7 +11,10 @@ export class PostsService {
     constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
     async createPost(postDto: CreatePostDto): Promise<Post> {
-        const newPost = new this.postModel(postDto);
+        const newPost = new this.postModel({
+            ...postDto,
+            slug: ((postDto.header + '-' + uuid.v1()).replace(' ', '-'))
+        });
 
         return await newPost.save();
     }
