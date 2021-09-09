@@ -20,15 +20,15 @@ export class PostsService {
     }
 
     async getAll(): Promise<Post[]> {
-        return await this.postModel.find().exec();
+        return await this.postModel.find().populate('author').exec();
     }
 
-    async getOne(id: string): Promise<Post> {
-        return await this.postModel.findById(id).exec();
+    async getOne(slug: string): Promise<Post> {
+        return await this.postModel.findOne({slug}).populate('author').exec();
     }
 
     async getOneBy(key: string, value: any): Promise<Post> {
-        return await this.postModel.findOne({[key]: value}).exec();
+        return await this.postModel.findOne({[key]: value}).populate('author').exec();
     }
 
     async updateOne(id: string, updatePostDto: UpdatePostDto): Promise<Post> {

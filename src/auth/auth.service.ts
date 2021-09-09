@@ -40,7 +40,10 @@ export class AuthService {
             refreshToken: tokens.refreshToken
         })
 
-        return tokens;
+        return {
+            ...tokens,
+            user
+        };
     }
 
     async login(userDto: LoginDto): Promise<object> {
@@ -64,9 +67,12 @@ export class AuthService {
         this.tokenService.saveRefreshToken({
             user,
             refreshToken: tokens.refreshToken
-        })
+        });
 
-        return tokens;
+        return {
+            ...tokens,
+            user
+        };
     }
 
     async logout(refreshToken: string): Promise<any> {

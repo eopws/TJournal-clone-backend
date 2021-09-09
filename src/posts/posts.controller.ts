@@ -18,9 +18,9 @@ export class PostsController {
         return this.postService.getAll();
     }
 
-    @Get(':id')
-    getOne(@Param('id') id: string): Promise<PostEntity> {
-        return this.postService.getOne(id);
+    @Get(':slug')
+    getOne(@Param('slug') slug: string): Promise<PostEntity> {
+        return this.postService.getOne(slug);
     }
 
     @Put(':id')
