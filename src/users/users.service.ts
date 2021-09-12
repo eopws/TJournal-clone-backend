@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { GetOneQuery } from './requestTypes';
 import { User, UserDocument } from './schemas/users.schema';
 
 
@@ -17,11 +19,11 @@ export class UsersService {
     }
 
     async getAll(): Promise<User[]> {
-        return await this.userModel.find().exec();
+        return await this.userModel.find().select('-password -activationLink -isActivated').exec();
     }
 
-    async getOne(id: string): Promise<User> {
-        return await this.userModel.findById(id).exec();
+    async getOne(query: GetOneQuery): Promise<User> {
+        return await this.userModel.findOne(query).select('-password -activationLink -isActivated').exec();
     }
 
     async updateOne(id: string, updateUserDto: UpdateUserDto): Promise<User> {

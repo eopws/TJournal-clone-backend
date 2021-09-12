@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
@@ -13,9 +13,9 @@ export class PostsController {
         return this.postService.createPost(postDto);
     }
 
-    @Get()
-    getAll(): Promise<PostEntity[]> {
-        return this.postService.getAll();
+    @Get('all')
+    getAll(@Query() query): Promise<PostEntity[]> {
+        return this.postService.getAll(query);
     }
 
     @Get(':slug')
