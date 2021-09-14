@@ -1,6 +1,6 @@
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 import { UsersModule } from 'src/users/users.module';
 import { AuthController } from './auth.controller';
@@ -11,13 +11,19 @@ import { Token, TokenSchema } from './schemas/token.schema';
 
 @Module({
   imports: [
-    UsersModule,
-    JwtModule.register({}),
+    forwardRef(() => UsersModule),
+    JwtModule.register({
+      secret: process.env.JWT_ACCESS_SECRET || 'SECRET'
+    }),
     MongooseModule.forFeature([
       {name: Token.name, schema: TokenSchema}
     ])
   ],
   controllers: [AuthController],
-  providers: [AuthService, TokenService, MailService]
+  providers: [AuthService, TokenService, MailService],
+  exports: [
+    AuthService,
+    JwtModule
+  ]
 })
 export class AuthModule {}
