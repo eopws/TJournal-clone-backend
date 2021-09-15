@@ -41,7 +41,7 @@ export class CommentsService {
     }
 
     async getAll(query): Promise<Comment[]> {
-        return await this.commentsModel.find().exec();
+        return await this.commentsModel.find(query).populate('author').exec();
     }
 
     async getOne(query): Promise<Comment> {
